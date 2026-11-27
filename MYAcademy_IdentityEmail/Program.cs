@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Identity;
 using MYAcademy_IdentityEmail.Context;
+using MYAcademy_IdentityEmail.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<EmailContext>();
-
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<EmailContext>()
+    .AddDefaultTokenProviders();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -18,7 +22,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
+
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Page{0}", "?statusCode={0}");
 app.UseRouting();
 
 app.UseAuthorization();
